@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div style={{ padding: "20px" }}>
         <h1>LegacyM</h1>
 
@@ -11,6 +11,6 @@ export default function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
