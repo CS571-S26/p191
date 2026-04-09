@@ -1,11 +1,29 @@
-const media = [
+export const films = [
   {
-    id: 1,
+    id: "godfather",
     title: "The Godfather",
-    year: 1972,
     decade: "1970s",
-    genre: "Crime, Drama",
-    cast: ["Marlon Brando", "Al Pacino"]
-  }];
-
-export default media;
+    year: 1972,
+    genre: "Crime",
+    rating: 9.2,
+    description: "A powerful mafia family saga."
+  },
+  {
+    id: "starwars",
+    title: "Star Wars",
+    decade: "1970s",
+    year: 1977,
+    genre: "Sci-Fi",
+    rating: 8.6,
+    description: "A space epic that changed cinema."
+  },
+  {
+    id: "breakingbad",
+    title: "Breaking Bad",
+    decade: "2000s",
+    year: 2008,
+    genre: "Drama",
+    rating: 9.5,
+    description: "A chemistry teacher becomes a drug kingpin."
+  }
+];
