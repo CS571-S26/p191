@@ -1,26 +1,26 @@
 import { useFavorites } from "../context/FavoritesContext";
+import { useNavigate } from "react-router-dom";
+import { Button, Container } from "react-bootstrap";
+import FilmList from "../components/FilmList";
 
 export default function Favorites() {
-  const { favorites, removeFavorite } = useFavorites();
+  const { favorites } = useFavorites();
+  const navigate = useNavigate();
 
+  // List all favorite films
   return (
-    <div>
-      <button onClick={() => navigate("/")}>
+    <Container>
+      <Button variant="secondary" onClick={() => navigate("/")}>
         Back to Home
-      </button>
+      </Button>
 
-      <h2>Your Favorite Films</h2>
+      <h2 className="mt-3">Your Favorite Films</h2>
 
-      {favorites.length === 0 && <p>No favorites yet.</p>}
-
-      {favorites.map((film) => (
-        <div key={film.id}>
-          <h3>{film.title}</h3>
-          <button onClick={() => removeFavorite(film.id)}>
-            Remove
-          </button>
-        </div>
-      ))}
-    </div>
+      {favorites.length === 0 ? (
+        <p>No favorites yet.</p>
+      ) : (
+        <FilmList films={favorites} />
+      )}
+    </Container>
   );
 }

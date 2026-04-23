@@ -1,39 +1,26 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { films } from "../data/media";
+import { Container } from "react-bootstrap";
+import FilmList from "../components/FilmList";
 
 export default function DecadePage() {
   const { decade } = useParams();
 
+  // Film dataset by decade
   const filteredFilms = films.filter(
     (film) => film.decade === decade
   );
 
   return (
-    <div>
+    <Container>
       <h2>{decade} Films & TV</h2>
 
+      {/* Show all films in a given decade */}
       {filteredFilms.length === 0 ? (
         <p>No films found for this decade yet.</p>
       ) : (
-        filteredFilms.map((film) => (
-          <div
-            key={film.id}
-            style={{
-              border: "1px solid gray",
-              padding: "10px",
-              marginBottom: "10px"
-            }}
-          >
-            <h3>{film.title}</h3>
-            <p>{film.year} • {film.genre}</p>
-            <p>Rating: {film.rating}</p>
-
-            <Link to={`/film/${film.id}`}>
-              View Details
-            </Link>
-          </div>
-        ))
+        <FilmList films={filteredFilms} />
       )}
-    </div>
+    </Container>
   );
 }

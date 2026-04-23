@@ -1,42 +1,48 @@
+import { useState } from "react";
+import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { films } from "../data/media";
+import FilmList from "../components/FilmList";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
-  const decades = [
-    "1970s",
-    "1980s",
-    "1990s",
-    "2000s",
-    "2010s",
-    "2020s"
-  ];
+  const [query, setQuery] = useState("");
+
+  // Filter films based on search with case insensitive match
+  const filteredFilms = films.filter((film) =>
+    film.title.toLowerCase().includes(query.toLowerCase())
+  );
+
+  // Filter top rated feature at least 9
+  const topRated = films.filter((film) => film.rating >= 9);
 
   return (
-    <div>
-      <h2>Explore Influential Films & TV</h2>
+    <Container>
+      <h2>Welcome to LegacyM</h2>
 
       <p>
-        Browse decades of culturally impactful movies and TV shows.
-        Discover legacy content and build your personal favorites list.
+        Discover culturally influential films and TV shows across decades.
+        Browse, rate, and build your personal favorites list.
       </p>
 
-      <h3>Select a Decade</h3>
+      {/* See movies by decade by pressing this */}
+      <Button as={Link} to="/decades" className="mb-3">
+        Browse by Decade
+      </Button>
 
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-        {decades.map((d) => (
-          <Link
-            key={d}
-            to={`/decade/${d}`}
-            style={{
-              padding: "10px",
-              border: "1px solid black",
-              borderRadius: "8px",
-              textDecoration: "none"
-            }}
-          >
-            {d}
-          </Link>
-        ))}
-      </div>
-    </div>
+      {/* Search Feature with updated query*/}
+      <h3>Search</h3>
+      <SearchBar query={query} setQuery={setQuery} />
+
+      {query && (
+        <>
+          <h4>Search Results</h4>
+          <FilmList films={filteredFilms} />
+        </>
+      )}
+
+      <h3 className="mt-4">Top Rated Films</h3>
+      <FilmList films={topRated} />
+    </Container>
   );
 }

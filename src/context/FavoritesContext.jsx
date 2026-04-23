@@ -3,29 +3,48 @@ import { createContext, useContext, useEffect, useState } from "react";
 const FavoritesContext = createContext();
 
 export function FavoritesProvider({ children }) {
-  // save list of favorite films
+  // Loads list of favorite films
   const [favorites, setFavorites] = useState(() => {
     return JSON.parse(localStorage.getItem("favorites")) || [];
   });
 
+  // Saves favorites when they change
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // add to favorites
+  // Add to favorites
   const addFavorite = (film) => {
     setFavorites((prev) => {
       if (prev.find((f) => f.id === film.id)) return prev;
       return [...prev, film];
     });
   };
-  // remove from favorites
+  // Remove from favorites
   const removeFavorite = (id) => {
     setFavorites((prev) => prev.filter((f) => f.id !== id));
   };
 
+  // Loads ratings
+  const [ratings, setRatings] = useState(() => {
+    return JSON.parse(localStorage.getItem("ratings")) || {};
+  });
+
+  // Saves ratings
+  useEffect(() => {
+    localStorage.setItem("ratings", JSON.stringify(ratings));
+  }, [ratings]);
+
+  // Update a film's rating
+  const rateFilm = (filmId, rating) => {
+    setRatings((prev) => ({
+      ...prev,
+      [filmId]: rating
+    }));
+  };
+
   return (
-    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite }}>
+    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite, ratings, rateFilm }}>
       {children}
     </FavoritesContext.Provider>
   );
