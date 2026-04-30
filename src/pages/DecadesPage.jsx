@@ -3,7 +3,7 @@ import { Container, Button } from "react-bootstrap";
 
 export default function DecadesPage() {
   // All featured decades for now
-  const decades = ["1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+  const decades = ["1920s", "1930s", "1940s", "1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
 
   return (
     <Container>

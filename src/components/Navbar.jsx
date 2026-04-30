@@ -14,7 +14,7 @@ export default function AppNavbar() { {/* Utilize boostrap for formatting */}
 
         <Navbar.Collapse id="nav">
           <Nav className="ms-auto">
-            {/* Three relevant pages to navigate to */}
+            {/* Four relevant pages to navigate to */}
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
@@ -25,6 +25,10 @@ export default function AppNavbar() { {/* Utilize boostrap for formatting */}
 
             <Nav.Link as={Link} to="/favorites">
               Favorites
+            </Nav.Link>
+
+            <Nav.Link as={Link} to="/compare">
+              Compare
             </Nav.Link>
 
           </Nav>

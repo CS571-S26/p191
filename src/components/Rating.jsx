@@ -1,29 +1,44 @@
 import { useFavorites } from "../context/FavoritesContext";
 
 export default function RatingStars({ filmId }) {
-  const { ratings, rateFilm } = useFavorites();
+  const { ratings, rateFilm, getAverageRating } = useFavorites();
 
-  const current = ratings[filmId] || 0;
+  const currentRaw = getAverageRating(filmId); // Stored Rating
+
+  const current =
+    typeof currentRaw === "number" && !isNaN(currentRaw)
+      ? currentRaw
+      : 0;
+
+  // Rating increments
+  const values = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
 
   return (
     <div>
-      {[1,2,3,4,5].map((star) => (
+
+      {/* Render Stars */}
+      {values.map((value) => (
         <span
-          key={star}
+          key={value}
+          onClick={() => rateFilm(filmId, value)}
           style={{
             cursor: "pointer",
-            color: star <= current ? "gold" : "gray",
-            fontSize: "20px"
+            fontSize: "22px",
+            color: value <= current ? "gold" : "gray"
           }}
-          onClick={() => rateFilm(filmId, star)}
         >
           ★
         </span>
       ))}
 
-      <div style={{ fontSize: "14px" }}>
-        Your Rating: {current ? `${current}/5` : "Not rated"}
+      {/* Display */}
+      <div>
+        My Rating:{" "}
+        <strong>
+          {current ? current.toFixed(1) : "0.0"} / 5
+        </strong>
       </div>
+
     </div>
   );
 }

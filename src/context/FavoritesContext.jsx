@@ -3,48 +3,61 @@ import { createContext, useContext, useEffect, useState } from "react";
 const FavoritesContext = createContext();
 
 export function FavoritesProvider({ children }) {
-  // Loads list of favorite films
+
+  // FAVORITES 
   const [favorites, setFavorites] = useState(() => {
     return JSON.parse(localStorage.getItem("favorites")) || [];
   });
 
-  // Saves favorites when they change
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // Add to favorites
+  // Modify adding & removing favorites
   const addFavorite = (film) => {
-    setFavorites((prev) => {
-      if (prev.find((f) => f.id === film.id)) return prev;
-      return [...prev, film];
-    });
+    setFavorites((prev) =>
+      prev.find((f) => f.id === film.id) ? prev : [...prev, film]
+    );
   };
-  // Remove from favorites
+
   const removeFavorite = (id) => {
     setFavorites((prev) => prev.filter((f) => f.id !== id));
   };
 
-  // Loads ratings
+  // RATINGS 
   const [ratings, setRatings] = useState(() => {
     return JSON.parse(localStorage.getItem("ratings")) || {};
   });
 
-  // Saves ratings
   useEffect(() => {
     localStorage.setItem("ratings", JSON.stringify(ratings));
   }, [ratings]);
 
-  // Update a film's rating
-  const rateFilm = (filmId, rating) => {
+  // Set rating with 0.5 increments
+  const rateFilm = (filmId, value) => {
     setRatings((prev) => ({
       ...prev,
-      [filmId]: rating
+      [filmId]: value
     }));
   };
 
+  // Get Average Ratings 
+  const getAverageRating = (filmId) => {
+    const val = ratings[filmId];
+    return typeof val === "number" ? val : 0;
+  };
+
   return (
-    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite, ratings, rateFilm }}>
+    <FavoritesContext.Provider
+      value={{
+        favorites,
+        addFavorite,
+        removeFavorite,
+        ratings,
+        rateFilm,
+        getAverageRating
+      }}
+    >
       {children}
     </FavoritesContext.Provider>
   );

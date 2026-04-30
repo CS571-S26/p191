@@ -1,25 +1,54 @@
 import { useParams } from "react-router-dom";
-import { films } from "../data/media";
-import { Container } from "react-bootstrap";
-import FilmList from "../components/FilmList";
+import { useEffect, useState } from "react";
+import { Container, Row, Col, Spinner, Badge } from "react-bootstrap";
+import { fetchByDecade } from "../data/movies";
+import FilmCard from "../components/FilmCard";
 
 export default function DecadePage() {
-  const { decade } = useParams();
+  const { decade } = useParams(); 
+  const [films, setFilms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Film dataset by decade
-  const filteredFilms = films.filter(
-    (film) => film.decade === decade
-  );
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+
+        const data = await fetchByDecade(decade);
+        const results = data.results || [];
+        // Sort films by popularity
+        results.sort((a, b) => b.popularity - a.popularity);
+
+        setFilms(results);
+      } catch (err) {
+        console.error("Failed to load decade data:", err);
+        setFilms([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, [decade]);
 
   return (
-    <Container>
-      <h2>{decade} Films & TV</h2>
+    <Container className="py-4">
+      <h2 className="mb-3">
+        {decade} Films & TV{" "}
+      </h2>
 
-      {/* Show all films in a given decade */}
-      {filteredFilms.length === 0 ? (
-        <p>No films found for this decade yet.</p>
+      {loading ? (
+        <Spinner animation="border" />
+      ) : films.length === 0 ? (
+        <p>No results found.</p>
       ) : (
-        <FilmList films={filteredFilms} />
+        <Row>
+          {films.map((film) => (
+            <Col key={film.id} md={4} className="mb-3">
+              <FilmCard film={film} />
+            </Col>
+          ))}
+        </Row>
       )}
     </Container>
   );
